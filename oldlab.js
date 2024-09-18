@@ -166,3 +166,12 @@ const newrows = array2.map(obj => {
 // combining headers and rows
 const csv = [headers.join(","), ...rows].join("\n");
 console.log(csv)
+
+
+let result = []
+
+try {
+    
+} catch (error) {
+    
+}

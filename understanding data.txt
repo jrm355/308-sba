@@ -1,0 +1,28 @@
+This page is to understand the calculations being made, the data was presented very 'wonky'
+
+
+
+{learner submissions [0,1, 2] , 
+
+---Mention [2] doesn't have a grade, consider using a break, need to loop through/ due date in more than 1000 years from now
+
+learnerSubmissions.score [0] + learnerSubmissions.score[1] / Assignmentinfo.points_possible [0] + assignnetinfo.points_possible [1],
+
+Asignmentinfo.id[0] learnerSubmissions [0] / assignment info [0]  
+
+Asignmentinfo.id[1] learnerSubmission [1] / assignment info [1]
+
+}
+
+
+learner submissions [3,4] ,
+
+learnerSubmissions.score [3] + learnerSubmissions.score[4] / Assignmentinfo.points_possible [0] + assignnetinfo.points_possible [1],
+
+Asignmentinfo.id[0] learnerSubmissions [3] / assignment info [0]  
+
+Asignmentinfo.id[1] learnerSubmission [4] / assignment info [1]
+
+
+
+
