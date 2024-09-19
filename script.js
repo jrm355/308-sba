@@ -1,13 +1,17 @@
+// The provided course information.
 const CourseInfo = {
   id: 451,
   name: "Introduction to JavaScript"
 };
+
+// The provided assignment group.
 const AssignmentGroup = {
   id: 12345,
   name: "Fundamentals of JavaScript",
   course_id: 451,
   group_weight: 25,
   assignments: [
+    // assignment info array of objects
     {
       id: 1,
       name: "Declare a Variable",
@@ -28,6 +32,7 @@ const AssignmentGroup = {
     }
   ]
 };
+
 // The provided learner submission data.
 const LearnerSubmissions = [
   {
@@ -71,69 +76,88 @@ const LearnerSubmissions = [
     }
   }
 ];
+
 function getLearnerData(course, ag, submissions) {
   try {
-    //validate the  data
+ //validation to check course_id and courseinfo Id don't match
     if (ag.course_id !== course.id) {
-      throw new Error('Invalid input: AssignmentGroup does not belong to the provided CourseInfo.');
+      throw new Error('Invalid ');
     }
-    // Get current date to filter 
-    const currentDate = new Date();
-    // Create a map 
-    const assignmentMap = new Map();
+
     ag.assignments.forEach(assignment => {
-      // Ensure points are positive
+ // checking to see if points are positive
       if (typeof assignment.points_possible !== 'number' || assignment.points_possible <= 0) {
-        throw new Error(`Invalid points_possible for assignment with ID ${assignment.id}.`);
-      }
-      // Include assignments that are due
-      if (new Date(assignment.due_at) <= currentDate) {
-        assignmentMap.set(assignment.id, assignment);
+        throw new Error(`Invalid`);
       }
     });
 
-    const learnerMap = new Map(); // To accumulate data for each learner
-    submissions.forEach(submissionData => {
-      const { learner_id, assignment_id, submission } = submissionData;
-      // Check if the assignment is valid 
-      const assignment = assignmentMap.get(assignment_id);
-      if (!assignment) {
-        // skip 
-        return;
-      }
-      // Initialize learner's record if not already present
-      if (!learnerMap.has(learner_id)) {
-        learnerMap.set(learner_id, { id: learner_id, totalScore: 0, totalPossible: 0, assignments: {} });
-      }
-      const learnerRecord = learnerMap.get(learner_id);
-      // Calculate percentage
-      let score = submission.score;
-      const pointsPossible = assignment.points_possible;
-      // Check if late
-      if (new Date(submission.submitted_at) > new Date(assignment.due_at)) {
-        // Deduct 10% for late submission
-        score -= pointsPossible * 0.1;
-      }
-      // Calculate the percentage score for the assignment
-      const percentage = Math.max(0, (score / pointsPossible)); // Value between 0 and 1
-      //total point
-      learnerRecord.totalScore += Math.max(0, score); // Ensure no negative scores
-      learnerRecord.totalPossible += pointsPossible;
-      // store as a key
-      learnerRecord.assignments[assignment_id] = percentage;
-    });
-    // calculate weight
-    const result = [];
-    learnerMap.forEach(learnerRecord => {
-/// calculate weighted average
-      learnerRecord.avg = learnerRecord.totalPossible > 0 ? (learnerRecord.totalScore / learnerRecord.totalPossible) : 0;
-      // Prepare the result object
-      const { id, avg, assignments } = learnerRecord;
-      const learnerResult = { id, avg, ...assignments };
-      // Add the learner's result to the results array
-      result.push(learnerResult);
-    });
-  ""
+    // console.log("working so far");
+    // //abt, always be testing
+    // //return an array in error
+    // return []
 
-// const result = getLearnerData(CourseInfo, /AssignmentGroup, LearnerSubmissions);
-// console.log(result)
+//   } catch (error) {
+//     console.error(error);
+//     //handling errors
+//   }
+// }
+
+
+  // processing data
+    const processedData = [];
+    let hasError = false; 
+
+    // looping through submissions
+    for (let i = 0; i < submissions.length; i++) {
+      const submission = submissions[i];
+      const assignment = ag.assignments.find(a => a.id === submission.assignment_id);
+
+      // Validatation
+      // if (!assignment) {
+      //   console.error(`${submission.assignment_id} not found.`);
+      //   hasError = true; // boolean flag
+      //   continue; //skipping 
+      // }
+
+      // Use switch
+      switch (true) {
+        case !submission.submission: // No submission data
+          console.error(`No submission data for learner ID ${submission.learner_id} and assignment ID ${submission.assignment_id}.`);
+          hasError = true; // Set the boolean flag
+          break;
+
+        default: // on time
+          processedScore = submission.submission.score;
+          break;
+      }
+
+      // Calculate  percentage 
+      const percentage = processedScore / assignment.points_possible;
+
+      // Storing in an arry
+      let learnerData = processedData.find(d => d.id === submission.learner_id);
+      if (!learnerData) {
+        learnerData = { id: submission.learner_id, avg: 0 };
+        processedData.push(learnerData);
+      }
+
+      // Add the percentage score to the learner
+      learnerData[submission.assignment_id] = percentage;
+    }
+
+    // if there's an error
+    if (hasError) {
+      return [];
+    }
+
+    return processedData;
+
+  } catch (error) {
+    console.error(error.message);
+    return [];
+  }
+}
+
+// Testing with the provided data
+const result = getLearnerData(CourseInfo, AssignmentGroup, LearnerSubmissions);
+console.log(result);

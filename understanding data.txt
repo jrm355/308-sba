@@ -24,5 +24,14 @@ Asignmentinfo.id[0] learnerSubmissions [3] / assignment info [0]
 Asignmentinfo.id[1] learnerSubmission [4] / assignment info [1]
 
 
+retrying thought process
 
+test input and match AssignmentGroup and course_id
+check to see if it equals zero
 
+check to see if point_possible is positive
+
+------
+loop through the submissions
+validate
+use if statement to go through assignements that aren't do
