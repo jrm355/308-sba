@@ -35,3 +35,8 @@ check to see if point_possible is positive
 loop through the submissions
 validate
 use if statement to go through assignements that aren't do
+
+
+fix  late assignements
+fix late submissions
+fix syntax
