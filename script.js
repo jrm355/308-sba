@@ -95,12 +95,18 @@ const LearnerSubmissions = [
   // ];
 
   function getLearnerData(course, ag, submissions) {
-    try {
+   
+ try {
    //validation to check course_id and courseinfo Id don't match
       if (ag.course_id !== course.id) {
         throw new Error('Invalid ');
       }
-  
+      // console.log("Course ID matches successfully.");
+    // } catch (error) { 
+    //   //catching error
+    //     console.error("Error:", error.message);
+    // }
+
       ag.assignments.forEach(assignment => {
    // checking to see if points are positive
         if (typeof assignment.points_possible !== 'number' || assignment.points_possible <= 0) {
@@ -136,21 +142,21 @@ const LearnerSubmissions = [
       // }
 // checking to see if assignments are due and skipping
       if (new Date(assignment.due_at) > new Date()) {
-        console.log(`Assignment ID ${assignment.id} is not yet due. Skipping.`);
+        // console.log(`Assignment ID ${assignment.id} is not yet due. Skipping.`);
         continue; // Skip this assignment if it's not due yet
       }
 
       let processedScore = submission.submission.score;
 
-      // handling processing
+      // handling processing using a switch
       switch (true) {
         case !submission.submission: // No submission 
-          console.error(`No submission learner ID ${submission.learner_id} and assignment ID ${submission.assignment_id}.`);
+          // console.error(`No submission learner ID ${submission.learner_id} and assignment ID ${submission.assignment_id}.`);
           hasError = true; // boolean 
           break;
 //late submission
         case submission.submission.submitted_at > assignment.due_at: 
-          console.log(`Late submission for learner  ${submission.learner_id} on assignment ${submission.assignment_id}.`);
+          // console.log(`Late submission for learner  ${submission.learner_id} on assignment ${submission.assignment_id}.`);
           processedScore = submission.submission.score * 0.9; // Deduct 10%
           break;
 
@@ -182,8 +188,8 @@ const LearnerSubmissions = [
         if (learner.hasOwnProperty(assignment.id)) {
           totalScore += learner[assignment.id] * assignment.points_possible;
           totalPoints += assignment.points_possible;
-        }
-      });
+        // } else (console.log )
+      }});
 
       // Calculate and storing average
       learner.avg = parseFloat((totalScore / totalPoints).toFixed(3)); // Rounding 
@@ -191,14 +197,14 @@ const LearnerSubmissions = [
 
     // Error return
     if (hasError) {
-      return 'you messed up';
+      return 'error';
     }
 
     return processedData;
 
   } catch (error) {
     console.error(error.message);
-    return 'you.re fine';
+    return 'error';
   }
 }
 
